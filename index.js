@@ -1,29 +1,47 @@
 let board = [
-    ['X','O','X'],
-    ['O','X','O'],
-    ['X','O','O'],
+    ['','',''],
+    ['','',''],
+    ['','',''],
 ];
 
-let playey1 = 'X';
-let playey2 = 'O';
+let players = ['X', 'O']
 
-
+let currentPlayer
 function setup() {
     createCanvas(400, 400);
+    if (random(1) < 0.5){
+        currentPlayer = players[0];
+    } else {
+        currentPlayer = players[1];
+    }
 }
 
 function draw() {
-    background(220);
+    background(158);
     let w = width / 3;
     let h = height / 3;
+
+    line(w, 0, w, height);
+    line(w*2 , 0, w*2, height);
+    line(0, h, width, h);
+    line(0, h*2, width, h*2);
+
     
-    for (let i =0; i < 3;i++) {
-        for(let j = 0; j < 3; j++) {
-            let x = w * i;
-            let y = h * j;
+    for (let j =0; j < 3;j++) {
+        for(let i = 0; i < 3; i++) {
+            let x = w * i + w/2;
+            let y = h * j + h/2;
             let spot = board[i][j];
             textSize(32);
-                text(spot, x, y);
+            strokeWeight(4);
+            if (spot == players[1]) {
+                noFill();
+                ellipse(x,y,w/2);
+            }   else if (spot == players[0]) {
+                let xr = w/4;
+                line(x-xr, y-xr, x + xr, y + xr);
+                line(x+xr, y-xr, x - xr, y + xr);
+            }
         }
     }
 }
