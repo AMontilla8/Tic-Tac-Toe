@@ -1,61 +1,51 @@
-let board = [
-    ['','',''],
-    ['','',''],
-    ['','',''],
-];
+let sign = "X";
+let disp = document.getElementById("player");
+let board;
 
-let players = ['X', 'O']
-let currentPlayer;
-let clickTracker = 0
 
-function setup() {
-    createCanvas(400, 400);
-    if (random(1) < 0.5){
-        currentPlayer = players[0];
-    } else {
-        currentPlayer = players[1];
-    }
-}
-
-function moveCount(board){
-let moveCount = 0
-for (let i = 0; i<board.length; i++){
-  for (let j = 0 ; j<board[i].length ; j++){
-    if (board[i][j]!=""){
-      moveCount++
-    }
+function printx(number){
+    let board = document.getElementById("sq"+number);
+//   console.log(board);
+  
+  if(board.innerText==""){
+  board.innerText=sign;
+  winner();
+  checksign();
+ disp.innerHTML="<center>"+ sign + " Player's Turn"+"</center>";
   }
 }
-return moveCount
+
+function checksign(){
+    if(sign == "X")sign = "O";
+    else sign = "X";
 }
 
-function draw() {
-    background(158);
-    let w = width / 3;
-    let h = height / 3;
-    strokeWeight(4);
+function getbox(no){
+    return document.getElementById("sq"+no).innerHTML;
+}
 
-    line(w, 0, w, height);
-    line(w*2 , 0, w*2, height);
-    line(0, h, width, h);
-    line(0, h*2, width, h*2);
+function checkmove(a,b,c,m){
+    if(getbox(a)== m && getbox(b)== m && getbox(c)== m)
+       return true;
+    else return false;   
+}
 
-    
-    for (let j =0; j < 3;j++) {
-        for(let i = 0; i < 3; i++) {
-            let x = w * i + w/2;
-            let y = h * j + h/2;
-            let spot = board[i][j];
-            textSize(32);
-            if (spot == players[1]) {
-                noFill();
-                ellipse(x,y,w/2);
-            }   else if (spot == players[0]) {
-                let xr = w/4;
-                line(x-xr, y-xr, x + xr, y + xr);
-                line(x+xr, y-xr, x - xr, y + xr);
-            }
-        }
+function winner(){
+    if(checkmove(1,2,3,sign)||checkmove(4,5,6,sign)||checkmove(7,8,9,sign)
+     ||checkmove(1,4,7,sign)||checkmove(2,5,8,sign)||checkmove(3,6,9,sign)
+     ||checkmove(1,5,9,sign)||checkmove(7,5,3,sign)){
+    disp.innerHTML = "<center>" +sign + " Win's" + "</center>";
+    for(let i = 1;i <= 9; i++){
+        document.getElementById("sq"+i).innerHTML="";
     }
-}
+   throw "game over";
+}else{
+    if(getbox(1)!=""&& getbox(2)!=""&& getbox(3)!=""&&
+       getbox(4)!=""&& getbox(5)!=""&& getbox(6)!=""&&
+       getbox(7)!=""&& getbox(8)!=""&& getbox(9)!=""){
 
+    disp.innerHTML = "<center> It's a Tie </center>";
+       throw "its a tie";
+   }
+}
+}
